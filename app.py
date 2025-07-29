@@ -21,11 +21,11 @@ def create_app(config_name=None):
     # Initialize extensions
     CORS(app)
     limiter = Limiter(
-        app,
         key_func=get_remote_address,
         storage_uri=app.config['RATELIMIT_STORAGE_URL']
     )
-    
+    limiter.init_app(app)
+
     # Setup logging
     setup_logger(app.config['LOG_LEVEL'])
     
