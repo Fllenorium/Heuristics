@@ -4,7 +4,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
 
 ## 🚀 Features
 
-- **AI Decision Analysis**: Use GPT-4 to analyze business decisions through the lens of behavioral economics
+- **AI Decision Analysis**: Use Google Gemini to analyze business decisions through the lens of behavioral economics
 - **Synthetic Population Generation**: Create realistic populations with diverse demographics and behavioral traits
 - **Behavior Simulation**: Predict how different types of people will react to your business decisions
 - **Real-time Insights**: Get detailed analysis and actionable recommendations
@@ -13,7 +13,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
 ## 🛠️ Technology Stack
 
 - **Backend**: Python Flask
-- **AI**: OpenAI GPT-4 API
+- **AI**: Google Gemini API
 - **Frontend**: HTML, Tailwind CSS, JavaScript
 - **Caching**: Redis (optional)
 - **Rate Limiting**: Flask-Limiter
@@ -24,7 +24,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
 ### Prerequisites
 
 - Python 3.8+
-- OpenAI API key
+- Google Gemini API key (Get one at [Google AI Studio](https://makersuite.google.com/app/apikey))
 - Redis (optional, for caching)
 
 ### Setup
@@ -53,7 +53,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
    
    Edit `.env` and add your configuration:
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
    SECRET_KEY=your_secret_key_here
    FLASK_ENV=development
    ```
@@ -84,7 +84,7 @@ Describe your business decision in plain English:
 
 ### 3. Run Simulation
 
-The AI will:
+Gemini AI will:
 - Analyze your decision using behavioral economics principles
 - Simulate individual reactions for each person in your population
 - Aggregate results into population-level insights
@@ -161,7 +161,7 @@ heuristics-ai/
 
 ## 🧠 AI Prompt Engineering
 
-The platform uses sophisticated prompt engineering to make GPT-4 think like a behavioral economist:
+The platform uses sophisticated prompt engineering to make Gemini think like a behavioral economist:
 
 ### Decision Analysis Prompts
 - Considers cognitive biases (loss aversion, anchoring, etc.)
@@ -170,7 +170,7 @@ The platform uses sophisticated prompt engineering to make GPT-4 think like a be
 - Extracts measurable parameters
 
 ### Behavior Simulation Prompts
-- Role-plays as specific individuals
+- Role-plays as specific individuals using Gemini's advanced reasoning
 - Considers personality traits and values
 - Predicts authentic reactions
 - Provides detailed reasoning
@@ -203,7 +203,7 @@ The platform uses sophisticated prompt engineering to make GPT-4 think like a be
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key | Required |
+| `GEMINI_API_KEY` | Google Gemini API key | Required |
 | `SECRET_KEY` | Flask secret key | Random |
 | `FLASK_ENV` | Environment | development |
 | `REDIS_URL` | Redis connection URL | redis://localhost:6379 |
@@ -245,7 +245,7 @@ python -m pytest tests/
 
 - Caching system for repeated requests
 - Batch processing for large populations
-- Rate limiting to respect OpenAI API limits
+- Rate limiting to respect Gemini API limits
 - Efficient database queries
 - Optimized frontend loading
 

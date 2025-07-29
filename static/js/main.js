@@ -97,7 +97,7 @@ const HeuristicsAI = {
             return await this.call('/health');
         },
         
-        // Analyze decision
+        // Analyze decision using Gemini
         analyzeDecision: async function(decisionText, decisionParams = {}) {
             return await this.call('/analyze-decision', 'POST', {
                 decision: decisionText,

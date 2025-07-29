@@ -12,8 +12,8 @@ class Config:
     RATELIMIT_STORAGE_URL = os.environ.get('RATELIMIT_STORAGE_URL', 'redis://localhost:6379')
     
     # Application Settings
-    MAX_POPULATION_SIZE = int(os.environ.get('MAX_POPULATION_SIZE', 10000))
-    DEFAULT_BATCH_SIZE = int(os.environ.get('DEFAULT_BATCH_SIZE', 50))
+    MAX_POPULATION_SIZE = int(os.environ.get('MAX_POPULATION_SIZE', 5000))
+    DEFAULT_BATCH_SIZE = int(os.environ.get('DEFAULT_BATCH_SIZE', 20))
     CACHE_TTL = int(os.environ.get('CACHE_TTL', 3600))
     
     # Logging

@@ -36,12 +36,12 @@ class BehaviorEngine:
     Simulates how individuals and populations react to business decisions.
     """
     
-    def __init__(self, api_key: str, cache_ttl: int = 3600, max_workers: int = 5):
+    def __init__(self, api_key: str, cache_ttl: int = 3600, max_workers: int = 3):
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-pro')
         self.cache = TTLCache(maxsize=5000, ttl=cache_ttl)
         self.max_workers = max_workers
-        self.rate_limit_delay = 0.2  # Delay between API calls to respect rate limits
+        self.rate_limit_delay = 1.0  # Delay between API calls to respect Gemini rate limits
         
     def _get_cache_key(self, person_profile: Dict, decision_analysis: Dict) -> str:
         """Generate cache key for person+decision combination"""
@@ -66,25 +66,20 @@ class BehaviorEngine:
             return self.cache[cache_key]
         
         try:
-            prompt = self._build_person_reaction_prompt(person_profile, decision_analysis)
+            # Combine system prompt and user prompt for Gemini
+            system_prompt = self._get_person_system_prompt()
+            user_prompt = self._build_person_reaction_prompt(person_profile, decision_analysis)
+            full_prompt = f"{system_prompt}\n\n{user_prompt}"
             
-            response = self.client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": self._get_person_system_prompt()
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                temperature=0.4,
-                max_tokens=800
+            response = self.model.generate_content(
+                full_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.4,
+                    max_output_tokens=800,
+                )
             )
             
-            reaction_text = response.choices[0].message.content
+            reaction_text = response.text
             reaction = self._parse_person_reaction(reaction_text, person_profile['id'])
             
             # Cache the result
@@ -125,8 +120,8 @@ class BehaviorEngine:
             
             logger.info(f"Processing batch {batch_num + 1}/{total_batches} ({len(batch)} people)")
             
-            # Process batch with ThreadPoolExecutor for concurrent API calls
-            with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Process batch with reduced concurrency for Gemini API
+            with ThreadPoolExecutor(max_workers=min(self.max_workers, 3)) as executor:
                 batch_reactions = list(executor.map(
                     lambda person: self.simulate_person_reaction(person, decision_analysis),
                     batch
@@ -134,9 +129,9 @@ class BehaviorEngine:
             
             all_reactions.extend(batch_reactions)
             
-            # Brief pause between batches
+            # Longer pause between batches for Gemini rate limits
             if batch_num < total_batches - 1:
-                time.sleep(1)
+                time.sleep(2)
         
         # Aggregate results
         results = self._aggregate_population_results(all_reactions, decision_analysis)

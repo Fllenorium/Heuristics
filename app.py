@@ -45,7 +45,7 @@ def create_app(config_name=None):
         return render_template('dashboard.html')
     
     @app.route('/api/analyze-decision', methods=['POST'])
-    @limiter.limit("30 per minute")
+    @limiter.limit("20 per minute")
     def analyze_decision():
         """Analyze a business decision using AI"""
         try:
@@ -68,7 +68,7 @@ def create_app(config_name=None):
             return jsonify({'error': 'Failed to analyze decision'}), 500
     
     @app.route('/api/generate-population', methods=['POST'])
-    @limiter.limit("10 per minute")
+    @limiter.limit("15 per minute")
     def generate_population():
         """Generate a synthetic population"""
         try:
@@ -90,7 +90,7 @@ def create_app(config_name=None):
             return jsonify({'error': 'Failed to generate population'}), 500
     
     @app.route('/api/run-simulation', methods=['POST'])
-    @limiter.limit("5 per minute")
+    @limiter.limit("3 per minute")
     def run_simulation():
         """Run a complete simulation on a population"""
         try:
