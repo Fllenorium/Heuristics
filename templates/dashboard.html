@@ -4,260 +4,365 @@
 
 {% block head %}
 <style>
-    .step-active { @apply bg-blue-600 text-white; }
-    .step-completed { @apply bg-green-600 text-white; }
-    .step-pending { @apply bg-gray-300 text-gray-600; }
+    .step-active { 
+        @apply bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg; 
+    }
+    .step-completed { 
+        @apply bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg; 
+    }
+    .step-pending { 
+        @apply bg-gray-600/50 text-gray-400 border border-gray-500/30; 
+    }
+    
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+    
+    .input-field {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(147, 51, 234, 0.5);
+        box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+    }
+    
+    .progress-line {
+        background: linear-gradient(90deg, 
+            rgba(147, 51, 234, 0.3) 0%, 
+            rgba(59, 130, 246, 0.3) 50%, 
+            rgba(16, 185, 129, 0.3) 100%);
+        height: 2px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-2">Simulation Dashboard</h1>
-    <p class="text-gray-600">Create and run AI-powered business decision simulations</p>
-</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-6xl font-bold font-space mb-4">
+            <span class="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Simulation Dashboard
+            </span>
+        </h1>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+            Create and run AI-powered business decision simulations with behavioral insights
+        </p>
+    </div>
 
-<!-- Progress Steps -->
-<div class="mb-8">
-    <div class="flex items-center justify-between">
-        <div class="flex items-center">
-            <div id="step-1" class="step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mr-4">1</div>
-            <span class="text-sm font-medium text-gray-900">Population Setup</span>
-        </div>
-        <div class="flex-1 h-1 bg-gray-300 mx-4"></div>
-        
-        <div class="flex items-center">
-            <div id="step-2" class="step-pending w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mr-4">2</div>
-            <span class="text-sm font-medium text-gray-600">Decision Input</span>
-        </div>
-        <div class="flex-1 h-1 bg-gray-300 mx-4"></div>
-        
-        <div class="flex items-center">
-            <div id="step-3" class="step-pending w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mr-4">3</div>
-            <span class="text-sm font-medium text-gray-600">Run Simulation</span>
-        </div>
-        <div class="flex-1 h-1 bg-gray-300 mx-4"></div>
-        
-        <div class="flex items-center">
-            <div id="step-4" class="step-pending w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mr-4">4</div>
-            <span class="text-sm font-medium text-gray-600">Results</span>
+    <!-- Progress Steps -->
+    <div class="mb-16">
+        <div class="flex items-center justify-between max-w-4xl mx-auto">
+            <div class="flex flex-col items-center">
+                <div id="step-1" class="step-active w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold mb-3 transition-all duration-300">1</div>
+                <span class="text-sm font-medium text-white">Population</span>
+            </div>
+            <div class="progress-line flex-1 mx-6"></div>
+            
+            <div class="flex flex-col items-center">
+                <div id="step-2" class="step-pending w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold mb-3 transition-all duration-300">2</div>
+                <span class="text-sm font-medium text-gray-400">Decision</span>
+            </div>
+            <div class="progress-line flex-1 mx-6"></div>
+            
+            <div class="flex flex-col items-center">
+                <div id="step-3" class="step-pending w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold mb-3 transition-all duration-300">3</div>
+                <span class="text-sm font-medium text-gray-400">Simulation</span>
+            </div>
+            <div class="progress-line flex-1 mx-6"></div>
+            
+            <div class="flex flex-col items-center">
+                <div id="step-4" class="step-pending w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold mb-3 transition-all duration-300">4</div>
+                <span class="text-sm font-medium text-gray-400">Results</span>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Step 1: Population Setup -->
-<div id="population-step" class="bg-white rounded-xl shadow-lg p-8 mb-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">1. Define Your Synthetic Population</h2>
-    
-    <div class="grid md:grid-cols-2 gap-8">
-        <div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Demographics</h3>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Population Size</label>
-                    <input type="number" id="population-size" value="1000" min="100" max="10000" 
-                           class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
+    <!-- Step 1: Population Setup -->
+    <div id="population-step" class="glass-card rounded-3xl p-8 mb-8">
+        <div class="flex items-center mb-8">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-3 mr-4">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-white">Define Your Synthetic Population</h2>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                    Demographics
+                </h3>
                 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Age Range</label>
-                    <div class="flex space-x-2">
-                        <input type="number" id="age-min" value="18" placeholder="Min" 
-                               class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <input type="number" id="age-max" value="65" placeholder="Max" 
-                               class="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Population Size</label>
+                        <input type="number" id="population-size" value="1000" min="100" max="10000" 
+                               class="input-field w-full rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none">
+                        <p class="text-xs text-gray-400 mt-2">Larger populations provide more accurate results</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Age Range</label>
+                        <div class="flex space-x-3">
+                            <input type="number" id="age-min" value="18" placeholder="Min" 
+                                   class="input-field w-1/2 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none">
+                            <input type="number" id="age-max" value="65" placeholder="Max" 
+                                   class="input-field w-1/2 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Income Level</label>
+                        <select id="income-level" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="mixed" class="bg-gray-800">Mixed Income Levels</option>
+                            <option value="low" class="bg-gray-800">Low Income ($20k-$40k)</option>
+                            <option value="middle" class="bg-gray-800">Middle Income ($40k-$80k)</option>
+                            <option value="high" class="bg-gray-800">High Income ($80k+)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Geographic Region</label>
+                        <select id="region" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="us" class="bg-gray-800">United States</option>
+                            <option value="europe" class="bg-gray-800">Europe</option>
+                            <option value="asia" class="bg-gray-800">Asia</option>
+                            <option value="global" class="bg-gray-800">Global</option>
+                        </select>
                     </div>
                 </div>
+            </div>
+            
+            <div>
+                <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
+                    <span class="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                    Behavioral Traits
+                </h3>
                 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Income Level</label>
-                    <select id="income-level" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="mixed">Mixed Income Levels</option>
-                        <option value="low">Low Income ($20k-$40k)</option>
-                        <option value="middle">Middle Income ($40k-$80k)</option>
-                        <option value="high">High Income ($80k+)</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Geographic Region</label>
-                    <select id="region" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="us">United States</option>
-                        <option value="europe">Europe</option>
-                        <option value="asia">Asia</option>
-                        <option value="global">Global</option>
-                    </select>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Tech Savviness</label>
+                        <select id="tech-savvy" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="mixed" class="bg-gray-800">Mixed Levels</option>
+                            <option value="low" class="bg-gray-800">Low</option>
+                            <option value="medium" class="bg-gray-800">Medium</option>
+                            <option value="high" class="bg-gray-800">High</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Price Sensitivity</label>
+                        <select id="price-sensitive" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="mixed" class="bg-gray-800">Mixed Sensitivity</option>
+                            <option value="low" class="bg-gray-800">Low Sensitivity</option>
+                            <option value="medium" class="bg-gray-800">Medium Sensitivity</option>
+                            <option value="high" class="bg-gray-800">High Sensitivity</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-3">Innovation Adoption</label>
+                        <select id="innovation" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="mixed" class="bg-gray-800">Mixed Adopters</option>
+                            <option value="early" class="bg-gray-800">Early Adopters</option>
+                            <option value="mainstream" class="bg-gray-800">Mainstream</option>
+                            <option value="late" class="bg-gray-800">Late Adopters</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Visual Preview -->
+                    <div class="bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-xl p-4 border border-purple-500/20">
+                        <h4 class="text-sm font-semibold text-purple-300 mb-2">Population Preview</h4>
+                        <div class="grid grid-cols-3 gap-2 text-xs text-gray-400">
+                            <div>Size: <span class="text-white font-medium">1,000</span></div>
+                            <div>Age: <span class="text-white font-medium">18-65</span></div>
+                            <div>Region: <span class="text-white font-medium">US</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Behavioral Traits</h3>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tech Savviness</label>
-                    <select id="tech-savvy" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="mixed">Mixed Levels</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Sensitivity</label>
-                    <select id="price-sensitive" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="mixed">Mixed Sensitivity</option>
-                        <option value="low">Low Sensitivity</option>
-                        <option value="medium">Medium Sensitivity</option>
-                        <option value="high">High Sensitivity</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Innovation Adoption</label>
-                    <select id="innovation" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="mixed">Mixed Adopters</option>
-                        <option value="early">Early Adopters</option>
-                        <option value="mainstream">Mainstream</option>
-                        <option value="late">Late Adopters</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="mt-8">
-        <button id="generate-population" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-            Generate Population
-        </button>
-        <div id="population-status" class="mt-4 text-sm text-gray-600"></div>
-    </div>
-</div>
-
-<!-- Step 2: Decision Input -->
-<div id="decision-step" class="bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">2. Input Your Business Decision</h2>
-    
-    <div class="space-y-6">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Describe Your Decision</label>
-            <textarea id="decision-text" rows="4" placeholder="E.g., 'Increase our SaaS pricing by 30% for new customers starting next month'"
-                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
-            <p class="text-xs text-gray-500 mt-2">Be specific about what you're changing, by how much, and when.</p>
-        </div>
-        
-        <div class="grid md:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Decision Type</label>
-                <select id="decision-type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="">Auto-detect</option>
-                    <option value="pricing">Pricing Change</option>
-                    <option value="product">Product Change</option>
-                    <option value="marketing">Marketing Strategy</option>
-                    <option value="ux">User Experience</option>
-                    <option value="business">Business Model</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Impact Timeline</label>
-                <select id="timeline" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="immediate">Immediate</option>
-                    <option value="short">1-3 months</option>
-                    <option value="medium">3-12 months</option>
-                    <option value="long">12+ months</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Scope</label>
-                <select id="scope" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="all">All Customers</option>
-                    <option value="new">New Customers Only</option>
-                    <option value="existing">Existing Customers Only</option>
-                    <option value="segment">Specific Segment</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="mt-8">
-            <button id="analyze-decision" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-                Analyze Decision
+        <div class="mt-10 flex justify-between items-center">
+            <button id="generate-population" class="group bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 flex items-center">
+                <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Generate Population
             </button>
-            <div id="analysis-status" class="mt-4 text-sm text-gray-600"></div>
+            <div id="population-status" class="text-sm text-gray-400"></div>
         </div>
     </div>
-</div>
 
-<!-- Step 3: Run Simulation -->
-<div id="simulation-step" class="bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">3. Run Simulation</h2>
-    
-    <div id="simulation-preview" class="bg-gray-50 rounded-lg p-6 mb-6">
-        <h3 class="font-semibold text-gray-900 mb-2">Simulation Preview</h3>
-        <p class="text-gray-600 mb-4">Ready to simulate the decision on your generated population.</p>
-        
-        <div class="grid md:grid-cols-2 gap-4 text-sm">
-            <div>
-                <strong>Population Size:</strong> <span id="preview-population-size">-</span>
+    <!-- Step 2: Decision Input -->
+    <div id="decision-step" class="glass-card rounded-3xl p-8 mb-8 hidden">
+        <div class="flex items-center mb-8">
+            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-3 mr-4">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h1a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm2.5 6a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                </svg>
             </div>
-            <div>
-                <strong>Decision Type:</strong> <span id="preview-decision-type">-</span>
-            </div>
+            <h2 class="text-3xl font-bold text-white">Input Your Business Decision</h2>
         </div>
-    </div>
-    
-    <div class="space-y-4">
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Simulation Settings</label>
-            <div class="grid md:grid-cols-2 gap-4">
+        
+        <div class="space-y-8">
+            <div>
+                <label class="block text-lg font-medium text-white mb-4">Describe Your Decision</label>
+                <textarea id="decision-text" rows="4" placeholder="E.g., 'Increase our SaaS pricing by 30% for new customers starting next month'"
+                          class="input-field w-full rounded-xl px-4 py-4 text-white placeholder-gray-400 resize-none focus:outline-none"></textarea>
+                <p class="text-sm text-gray-400 mt-3">Be specific about what you're changing, by how much, and when.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1">Batch Size (for API efficiency)</label>
-                    <input type="number" id="batch-size" value="50" min="10" max="100" 
-                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Decision Type</label>
+                    <select id="decision-type" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                        <option value="" class="bg-gray-800">Auto-detect</option>
+                        <option value="pricing" class="bg-gray-800">Pricing Change</option>
+                        <option value="product" class="bg-gray-800">Product Change</option>
+                        <option value="marketing" class="bg-gray-800">Marketing Strategy</option>
+                        <option value="ux" class="bg-gray-800">User Experience</option>
+                        <option value="business" class="bg-gray-800">Business Model</option>
+                    </select>
                 </div>
+                
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1">Detail Level</label>
-                    <select id="detail-level" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="summary">Summary</option>
-                        <option value="detailed">Detailed</option>
-                        <option value="comprehensive">Comprehensive</option>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Impact Timeline</label>
+                    <select id="timeline" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                        <option value="immediate" class="bg-gray-800">Immediate</option>
+                        <option value="short" class="bg-gray-800">1-3 months</option>
+                        <option value="medium" class="bg-gray-800">3-12 months</option>
+                        <option value="long" class="bg-gray-800">12+ months</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Scope</label>
+                    <select id="scope" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                        <option value="all" class="bg-gray-800">All Customers</option>
+                        <option value="new" class="bg-gray-800">New Customers Only</option>
+                        <option value="existing" class="bg-gray-800">Existing Customers Only</option>
+                        <option value="segment" class="bg-gray-800">Specific Segment</option>
                     </select>
                 </div>
             </div>
-        </div>
-        
-        <div class="mt-8">
-            <button id="run-simulation" class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-colors text-lg font-semibold">
-                🚀 Run Simulation
-            </button>
-            <div id="simulation-progress" class="mt-4 hidden">
-                <div class="bg-gray-200 rounded-full h-2">
-                    <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-                <p class="text-sm text-gray-600 mt-2">Running simulation... <span id="progress-text">0%</span></p>
+            
+            <div class="flex justify-between items-center">
+                <button id="analyze-decision" class="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold hover:scale-105 transition-all duration-300 flex items-center">
+                    <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    Analyze Decision
+                </button>
+                <div id="analysis-status" class="text-sm text-gray-400"></div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Step 4: Results -->
-<div id="results-step" class="bg-white rounded-xl shadow-lg p-8 hidden">
-    <h2 class="text-2xl font-bold text-gray-900 mb-6">4. Simulation Results</h2>
-    <div id="results-content">
-        <!-- Results will be loaded here -->
+    <!-- Step 3: Run Simulation -->
+    <div id="simulation-step" class="glass-card rounded-3xl p-8 mb-8 hidden">
+        <div class="flex items-center mb-8">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-3 mr-4">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-white">Run Simulation</h2>
+        </div>
+        
+        <div id="simulation-preview" class="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl p-6 mb-8 border border-green-500/20">
+            <h3 class="text-lg font-semibold text-white mb-4">Simulation Preview</h3>
+            <p class="text-gray-300 mb-6">Ready to simulate the decision on your generated population.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Population Size:</span> 
+                    <span id="preview-population-size" class="text-white font-medium">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Decision Type:</span> 
+                    <span id="preview-decision-type" class="text-white font-medium">-</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="space-y-6">
+            <div>
+                <label class="block text-lg font-medium text-white mb-4">Simulation Settings</label>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm text-gray-300 mb-2">Batch Size (for API efficiency)</label>
+                        <input type="number" id="batch-size" value="50" min="10" max="100" 
+                               class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-300 mb-2">Detail Level</label>
+                        <select id="detail-level" class="input-field w-full rounded-xl px-4 py-3 text-white focus:outline-none">
+                            <option value="summary" class="bg-gray-800">Summary</option>
+                            <option value="detailed" class="bg-gray-800">Detailed</option>
+                            <option value="comprehensive" class="bg-gray-800">Comprehensive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <button id="run-simulation" class="group bg-gradient-to-r from-green-500 to-emerald-500 text-white px-10 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all duration-300 flex items-center">
+                    <svg class="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Run Simulation
+                </button>
+                
+                <div id="simulation-progress" class="hidden">
+                    <div class="bg-gray-700/50 rounded-full h-3 w-64">
+                        <div id="progress-bar" class="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-2">Running simulation... <span id="progress-text">0%</span></p>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Loading Overlay -->
-<div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4">
-        <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Processing...</h3>
-            <p class="text-gray-600 text-sm">This may take a few moments</p>
+    <!-- Step 4: Results -->
+    <div id="results-step" class="glass-card rounded-3xl p-8 hidden">
+        <div class="flex items-center mb-8">
+            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl p-3 mr-4">
+                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-white">Simulation Results</h2>
+        </div>
+        
+        <div id="results-content">
+            <!-- Results will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="glass-card rounded-2xl p-10 max-w-sm w-full mx-4">
+            <div class="text-center">
+                <div class="relative">
+                    <div class="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-6"></div>
+                    <div class="absolute inset-0 w-16 h-16 border-4 border-blue-500/20 border-b-blue-500 rounded-full animate-spin mx-auto" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Processing...</h3>
+                <p class="text-gray-400 text-sm">This may take a few moments</p>
+            </div>
         </div>
     </div>
 </div>

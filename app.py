@@ -30,8 +30,8 @@ def create_app(config_name=None):
     setup_logger(app.config['LOG_LEVEL'])
     
     # Initialize services
-    decision_analyzer = DecisionAnalyzer(app.config['OPENAI_API_KEY'])
-    behavior_engine = BehaviorEngine(app.config['OPENAI_API_KEY'])
+    decision_analyzer = DecisionAnalyzer(app.config['GEMINI_API_KEY'])
+    behavior_engine = BehaviorEngine(app.config['GEMINI_API_KEY'])
     population_generator = PopulationGenerator()
     
     @app.route('/')
@@ -127,7 +127,7 @@ def create_app(config_name=None):
         return jsonify({
             'status': 'healthy',
             'version': '1.0.0',
-            'openai_configured': bool(app.config['OPENAI_API_KEY'])
+            'gemini_configured': bool(app.config['GEMINI_API_KEY'])
         })
     
     @app.errorhandler(404)
