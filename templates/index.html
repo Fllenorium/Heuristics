@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-blue-600 to-purple-600 -mx-4 sm:-mx-6 lg:-mx-8 -mt-8 mb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Test Business Decisions
+                <span class="block text-yellow-300">Before You Make Them</span>
+            </h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                Use AI-powered synthetic populations to simulate how real people will react to your business decisions, product changes, and strategic initiatives.
+            </p>
+            <div class="space-x-4">
+                <a href="{{ url_for('dashboard') }}" class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+                    Start Simulation
+                </a>
+                <a href="#features" class="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-block">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div id="features" class="py-16">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Our AI analyzes your business decisions and simulates reactions from diverse synthetic populations.
+        </p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-blue-600">1</span>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Define Your Population</h3>
+            <p class="text-gray-600">
+                Set parameters like age, income, location, and behaviors to create a synthetic population that matches your target market.
+            </p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-green-600">2</span>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Input Your Decision</h3>
+            <p class="text-gray-600">
+                Describe your business decision in plain English. Our AI will analyze the key factors and implications.
+            </p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl font-bold text-purple-600">3</span>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Get Insights</h3>
+            <p class="text-gray-600">
+                Receive detailed analysis showing how different segments of your population will react to your decision.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Example Decisions -->
+<div class="bg-gray-100 rounded-xl p-8 my-16">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Example Decisions You Can Test</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">💰 Pricing Changes</h3>
+            <p class="text-gray-600">"Increase our SaaS pricing by 30%"</p>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">🌍 Market Expansion</h3>
+            <p class="text-gray-600">"Launch our product in European markets"</p>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">🎨 Brand Changes</h3>
+            <p class="text-gray-600">"Change our brand colors from blue to green"</p>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">🔐 UX Changes</h3>
+            <p class="text-gray-600">"Require account creation before purchase"</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-blue-600 rounded-xl p-8 text-center text-white">
+    <h2 class="text-3xl font-bold mb-4">Ready to Test Your Next Decision?</h2>
+    <p class="text-blue-100 mb-6 text-lg">
+        Join forward-thinking companies using AI to make better business decisions.
+    </p>
+    <a href="{{ url_for('dashboard') }}" class="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+        Start Your First Simulation
+    </a>
+</div>
+{% endblock %}
