@@ -1,4 +1,4 @@
-import openai
+import google.generativeai as genai
 import json
 import logging
 import asyncio
@@ -32,15 +32,16 @@ class PopulationResults(BaseModel):
 
 class BehaviorEngine:
     """
-    AI-powered behavior prediction engine using OpenAI GPT-4.
+    AI-powered behavior prediction engine using Google Gemini.
     Simulates how individuals and populations react to business decisions.
     """
     
     def __init__(self, api_key: str, cache_ttl: int = 3600, max_workers: int = 5):
-        self.client = openai.OpenAI(api_key=api_key)
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
         self.cache = TTLCache(maxsize=5000, ttl=cache_ttl)
         self.max_workers = max_workers
-        self.rate_limit_delay = 0.1  # Delay between API calls to respect rate limits
+        self.rate_limit_delay = 0.2  # Delay between API calls to respect rate limits
         
     def _get_cache_key(self, person_profile: Dict, decision_analysis: Dict) -> str:
         """Generate cache key for person+decision combination"""

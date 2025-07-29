@@ -1,4 +1,4 @@
-import openai
+import google.generativeai as genai
 import json
 import logging
 from typing import Dict, List, Optional
@@ -22,12 +22,13 @@ class DecisionAnalysis(BaseModel):
 
 class DecisionAnalyzer:
     """
-    AI-powered decision analysis using OpenAI GPT-4.
+    AI-powered decision analysis using Google Gemini.
     Analyzes business decisions through the lens of behavioral economics.
     """
     
     def __init__(self, api_key: str, cache_ttl: int = 3600):
-        self.client = openai.OpenAI(api_key=api_key)
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
         self.cache = TTLCache(maxsize=1000, ttl=cache_ttl)
         
     def _get_cache_key(self, decision_text: str, decision_params: Optional[Dict] = None) -> str:
@@ -37,7 +38,7 @@ class DecisionAnalyzer:
     
     def analyze_decision(self, decision_text: str, decision_params: Optional[Dict] = None) -> Dict:
         """
-        Analyze a business decision using GPT-4 with behavioral economics perspective.
+        Analyze a business decision using Gemini with behavioral economics perspective.
         
         Args:
             decision_text: Plain English description of the business decision
@@ -54,25 +55,20 @@ class DecisionAnalyzer:
             return self.cache[cache_key]
         
         try:
-            prompt = self._build_analysis_prompt(decision_text, decision_params)
+            # Combine system prompt and user prompt for Gemini
+            system_prompt = self._get_system_prompt()
+            user_prompt = self._build_analysis_prompt(decision_text, decision_params)
+            full_prompt = f"{system_prompt}\n\n{user_prompt}"
             
-            response = self.client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": self._get_system_prompt()
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                temperature=0.3,
-                max_tokens=2000
+            response = self.model.generate_content(
+                full_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.3,
+                    max_output_tokens=2000,
+                )
             )
             
-            analysis_text = response.choices[0].message.content
+            analysis_text = response.text
             analysis = self._parse_analysis_response(analysis_text)
             
             # Cache the result
@@ -86,7 +82,7 @@ class DecisionAnalyzer:
             raise Exception(f"Failed to analyze decision: {str(e)}")
     
     def _get_system_prompt(self) -> str:
-        """System prompt that makes GPT-4 think like a behavioral economist"""
+        """System prompt that makes Gemini think like a behavioral economist"""
         return """You are an expert behavioral economist and decision analyst specializing in predicting human reactions to business decisions. Your role is to analyze business decisions through the lens of psychology, economics, and human behavior.
 
 When analyzing a decision, consider:
