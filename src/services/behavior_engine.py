@@ -1,4 +1,4 @@
-import openai
+import google.generativeai as genai
 import json
 import logging
 import asyncio
@@ -32,12 +32,13 @@ class PopulationResults(BaseModel):
 
 class BehaviorEngine:
     """
-    AI-powered behavior prediction engine using OpenAI GPT-4.
+    AI-powered behavior prediction engine using Google Gemini API.
     Simulates how individuals and populations react to business decisions.
     """
     
     def __init__(self, api_key: str, cache_ttl: int = 3600, max_workers: int = 5):
-        self.client = openai.OpenAI(api_key=api_key)
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-pro')
         self.cache = TTLCache(maxsize=5000, ttl=cache_ttl)
         self.max_workers = max_workers
         self.rate_limit_delay = 0.1  # Delay between API calls to respect rate limits
@@ -67,23 +68,15 @@ class BehaviorEngine:
         try:
             prompt = self._build_person_reaction_prompt(person_profile, decision_analysis)
             
-            response = self.client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": self._get_person_system_prompt()
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ],
-                temperature=0.4,
-                max_tokens=800
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.4,
+                    max_output_tokens=800,
+                )
             )
             
-            reaction_text = response.choices[0].message.content
+            reaction_text = response.text
             reaction = self._parse_person_reaction(reaction_text, person_profile['id'])
             
             # Cache the result
@@ -167,7 +160,9 @@ Be realistic and nuanced. People often have complex, mixed reactions. Consider b
 
     def _build_person_reaction_prompt(self, person_profile: Dict, decision_analysis: Dict) -> str:
         """Build prompt for simulating individual person reaction"""
-        return f"""You are roleplaying as this person:
+        return f"""{self._get_person_system_prompt()}
+
+You are roleplaying as this person:
 
 PERSON PROFILE:
 {json.dumps(person_profile, indent=2)}

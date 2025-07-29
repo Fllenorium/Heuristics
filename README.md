@@ -13,7 +13,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
 ## 🛠️ Technology Stack
 
 - **Backend**: Python Flask
-- **AI**: OpenAI GPT-4 API
+- **AI**: Google Gemini API
 - **Frontend**: HTML, Tailwind CSS, JavaScript
 - **Caching**: Redis (optional)
 - **Rate Limiting**: Flask-Limiter
@@ -24,7 +24,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
 ### Prerequisites
 
 - Python 3.8+
-- OpenAI API key
+- Google Gemini API key
 - Redis (optional, for caching)
 
 ### Setup
@@ -53,7 +53,7 @@ An AI-powered platform for testing business decisions on synthetic populations b
    
    Edit `.env` and add your configuration:
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   GEMINI_API_KEY=your_gemini_api_key_here
    SECRET_KEY=your_secret_key_here
    FLASK_ENV=development
    ```
@@ -203,7 +203,7 @@ The platform uses sophisticated prompt engineering to make GPT-4 think like a be
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key | Required |
+| `GEMINI_API_KEY` | Google Gemini API key | Required |
 | `SECRET_KEY` | Flask secret key | Random |
 | `FLASK_ENV` | Environment | development |
 | `REDIS_URL` | Redis connection URL | redis://localhost:6379 |
@@ -245,7 +245,7 @@ python -m pytest tests/
 
 - Caching system for repeated requests
 - Batch processing for large populations
-- Rate limiting to respect OpenAI API limits
+- Rate limiting to respect Gemini API limits
 - Efficient database queries
 - Optimized frontend loading
 
